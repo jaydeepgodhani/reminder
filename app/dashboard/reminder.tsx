@@ -1,11 +1,11 @@
-'use client';
-import { ReactNode } from "react";
+"use client";
 import { timers } from "../constants";
+import { Imessage } from "./reminders";
 
-export default function ReminderWithOptions({
-  message,
-  setCurrentReminder
-}): ReactNode {
+const ReminderWithOptions: React.FC<{
+  message: Imessage;
+  setCurrentReminder: React.Dispatch<React.SetStateAction<number>>;
+}> = ({ message, setCurrentReminder }) => {
   const { data, currentInterval, lastViewed } = message;
   const previousHandler = () => {
     // update date & minus one
@@ -55,4 +55,6 @@ export default function ReminderWithOptions({
       </div>
     </div>
   );
-}
+};
+
+export default ReminderWithOptions;

@@ -10,12 +10,23 @@ export default function NewReminder() {
   };
 
   const clickHandler = (e: any) => {
-    messages.push({
-      // if not null then only add
-      data: text,
-      lastViewed: new Date(),
-      currentInterval: 0,
-    });
+    const reminders = localStorage.getItem("reminders");
+    let jsonReminder = [];
+    if(reminders) {
+      jsonReminder = JSON.parse(reminders);
+    }
+    if(text) {
+      const now = new Date();
+      now.setSeconds(0);
+      now.setMilliseconds(0);
+      jsonReminder.push({
+        // if not null then only add
+        data: text,
+        lastViewed: now,
+        currentInterval: 0,
+      });
+    }
+    localStorage.setItem("reminders", JSON.stringify(jsonReminder));
   };
 
   return (
