@@ -1,4 +1,4 @@
-'use client';
+"use client";
 import { useState } from "react";
 import ReminderWithOptions from "./reminder";
 
@@ -46,28 +46,33 @@ export interface Imessage {
 //   },
 // ];
 
-export default function Reminders() {
+export default function Reminders({ data=[] }) {
   const [currentReminder, setCurrentReminder] = useState<number>(0);
 
   let messages: Imessage[] = [];
-  const reminders = localStorage.getItem('reminders');
-  if(reminders) {
-    const jsonReminder = JSON.parse(reminders);
-    messages = jsonReminder.map((obj: Imessage) => {
-      return {
-        data: obj.data,
-        lastViewed: new Date(obj.lastViewed),
-        currentInterval: obj.currentInterval
-    }});
-  }
 
-  if (messages.length === 0) return <p>No reminders. Keep up the revisions.</p>;
-  if (currentReminder >= messages.length)
+  const reminders = localStorage.getItem("reminders");
+  console.log(reminders);
+
+  // if (reminders) {
+  //   const jsonReminder = JSON.parse(reminders);
+
+  //   messages = jsonReminder.map((obj: Imessage) => {
+  //     return {
+  //       data: obj.data,
+  //       lastViewed: new Date(obj.lastViewed),
+  //       currentInterval: obj.currentInterval,
+  //     };
+  //   });
+  // }
+
+  if (data.length === 0) return <p>No reminders. Keep up the revisions.</p>;
+  if (currentReminder >= data.length)
     return <p>You did everything. Awesome.</p>;
 
   return (
     <ReminderWithOptions
-      message={messages[currentReminder]}
+      message={data[currentReminder]}
       setCurrentReminder={setCurrentReminder}
     />
   );
