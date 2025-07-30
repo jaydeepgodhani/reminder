@@ -51,7 +51,11 @@ export default function Reminders({ data=[] }) {
 
   let messages: Imessage[] = [];
 
-  if (data.length === 0) return <p>No reminders. Keep up the revisions.</p>;
+  if (data.length === 0) return (
+    <p className="font-mono">
+      No reminders. Keep up the revisions.
+    </p>
+  );
   if (currentReminder >= data.length)
     return <p>You did everything. Awesome.</p>;
 

@@ -1,6 +1,34 @@
 @import "tailwindcss";
 
+@font-face {
+  font-family: "ember-regular";
+  src: url("../public/ember_regular.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "ember-bold";
+  src: url("../public/ember_bold.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "ember-mono-bold";
+  src: url("../public/ember_mono_bold.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "ember-mono-regular";
+  src: url("../public/ember_mono_regular.woff2") format("woff2");
+}
+
 @theme inline {
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: 'ember-regular';
+  --font-bold: 'ember-bold';
+  --font-mono: 'ember-mono-regular';
+  --font-mono-bold: 'ember-mono-bold';
+}
+
+@layer base {
+  html {
+    font-family: ember-regular;
+  }
 }
