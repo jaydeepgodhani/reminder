@@ -51,21 +51,6 @@ export default function Reminders({ data=[] }) {
 
   let messages: Imessage[] = [];
 
-  const reminders = localStorage.getItem("reminders");
-  console.log(reminders);
-
-  // if (reminders) {
-  //   const jsonReminder = JSON.parse(reminders);
-
-  //   messages = jsonReminder.map((obj: Imessage) => {
-  //     return {
-  //       data: obj.data,
-  //       lastViewed: new Date(obj.lastViewed),
-  //       currentInterval: obj.currentInterval,
-  //     };
-  //   });
-  // }
-
   if (data.length === 0) return <p>No reminders. Keep up the revisions.</p>;
   if (currentReminder >= data.length)
     return <p>You did everything. Awesome.</p>;

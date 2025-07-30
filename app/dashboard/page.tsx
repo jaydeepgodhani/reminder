@@ -1,40 +1,35 @@
 "use client";
 import { useEffect, useState } from "react";
-import { timers } from "../constants";
+import { getLocalStorage, timers } from "../constants";
 import NewReminder from "./addReminder";
 import Reminders, { Imessage } from "./reminders";
 
 export default function Dashboard() {
   const [lastUpdated, setLastUpdated] = useState<string | null>(null);
   const [data, setData] = useState<Imessage[]>();
-  useEffect(() => {
-    setLastUpdated(new Date().toUTCString());
-  }, []);
+
   let arr = [];
   const refreshHandler = () => {
+    setLastUpdated(new Date().toUTCString());
     // what to do on refresh
-    const localReminder = localStorage.getItem("reminders");
-    if (localReminder) {
-      const reminders = JSON.parse(localReminder);
-      for (const reminder of reminders) {
-        const lastviewed = new Date(reminder.lastViewed);
-        const currentInterval = reminder.currentInterval;
-        console.log(lastviewed, currentInterval);
-        const displayAt = lastviewed.setHours(
-          lastviewed.getHours() + timers[currentInterval]
-        );
-        if(new Date().getTime() > new Date(displayAt).getTime()) {
-          arr.push(reminder);
-        }
-        console.log(new Date(displayAt));
-        console.log("---");
+    const reminders = getLocalStorage();
+    for (const reminder of reminders) {
+      const lastviewed = new Date(reminder.lastViewed);
+      const currentInterval = reminder.currentInterval;
+      const displayAt = lastviewed.setHours(
+        lastviewed.getHours() + timers[currentInterval]
+      );
+      if (new Date().getTime() > new Date(displayAt).getTime()) {
+        arr.push(reminder);
       }
-      setData(arr);
-    } else {
-      // what ?
     }
-    console.log("9");
+
+    setData(arr);
   };
+
+  useEffect(() => {
+    refreshHandler();
+  }, []);
 
   return (
     <div>

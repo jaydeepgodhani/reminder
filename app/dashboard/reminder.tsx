@@ -1,5 +1,10 @@
 "use client";
-import { timers } from "../constants";
+import {
+  findFromLocalStorage,
+  getLocalStorage,
+  getNow,
+  timers,
+} from "../constants";
 import { Imessage } from "./reminders";
 
 const ReminderWithOptions: React.FC<{
@@ -9,10 +14,27 @@ const ReminderWithOptions: React.FC<{
   const { data, currentInterval, lastViewed } = message;
   const previousHandler = () => {
     // update date & minus one
+    const reminders = getLocalStorage();
+    const reminder = findFromLocalStorage(message, reminders);
+    if (reminder) {
+      reminder.currentInterval = reminder.currentInterval - 1;
+      const now = getNow();
+      reminder.lastViewed = now.toISOString();
+    }
+    localStorage.setItem("reminders", JSON.stringify(reminders));
     setCurrentReminder((e: number) => e + 1);
   };
+
   const currentHandler = () => {
     // update date
+    const reminders = getLocalStorage();
+    const reminder = findFromLocalStorage(message, reminders);
+    if (reminder) {
+      reminder.currentInterval = reminder.currentInterval + 1;
+      const now = getNow();
+      reminder.lastViewed = now.toISOString();
+    }
+    localStorage.setItem("reminders", JSON.stringify(reminders));
     setCurrentReminder((e: number) => e + 1);
   };
 
@@ -20,16 +42,11 @@ const ReminderWithOptions: React.FC<{
     setCurrentReminder((e: number) => e + 1);
   };
 
-  const previousDays = () => {
-    if (timers[currentInterval - 1] <= 24)
-      return timers[currentInterval - 1] + " Hours";
-    else return timers[currentInterval - 1] / 24 + " Days";
-  };
+  const times = (interval: number) => {
+    console.log(interval);
 
-  const currentDays = () => {
-    if (timers[currentInterval] <= 24)
-      return timers[currentInterval] + " Hours";
-    else return timers[currentInterval] / 24 + " Days";
+    if (timers[interval] <= 24) return timers[interval] + " Hours";
+    else return timers[interval] / 24 + " Days";
   };
 
   return (
@@ -40,18 +57,18 @@ const ReminderWithOptions: React.FC<{
       <br />
       <div className="flex space-between">
         {currentInterval > 0 && (
-          <button onClick={previousHandler} className="border p-2">
-            {previousDays()}
-          </button>
-        )}
-        {currentInterval < timers.length - 1 && (
-          <button onClick={currentHandler} className="border p-2">
-            {currentDays()}
+          <button onClick={previousHandler} className="border p-2 bg-blue-700">
+            {times(currentInterval - 1)}
           </button>
         )}
         <button onClick={skipHandler} className="border p-2">
           Skip
         </button>
+        {currentInterval < timers.length - 1 && (
+          <button onClick={currentHandler} className="border p-2 bg-red-700">
+            {times(currentInterval)}
+          </button>
+        )}
       </div>
     </div>
   );

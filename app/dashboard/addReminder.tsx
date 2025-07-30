@@ -1,5 +1,6 @@
 'use client';
 import { useState } from "react";
+import { getLocalStorage, getNow } from "../constants";
 
 export default function NewReminder() {
 
@@ -10,15 +11,9 @@ export default function NewReminder() {
   };
 
   const clickHandler = (e: any) => {
-    const reminders = localStorage.getItem("reminders");
-    let jsonReminder = [];
-    if(reminders) {
-      jsonReminder = JSON.parse(reminders);
-    }
+    const jsonReminder = getLocalStorage();
     if(text) {
-      const now = new Date();
-      now.setSeconds(0);
-      now.setMilliseconds(0);
+      const now = getNow();
       jsonReminder.push({
         // if not null then only add
         data: text,
