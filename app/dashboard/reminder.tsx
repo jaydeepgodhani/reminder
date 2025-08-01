@@ -43,8 +43,6 @@ const ReminderWithOptions: React.FC<{
   };
 
   const times = (interval: number) => {
-    console.log(interval);
-
     if (timers[interval] <= 24) return timers[interval] + " Hours";
     else return timers[interval] / 24 + " Days";
   };
