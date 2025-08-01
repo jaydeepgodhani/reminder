@@ -49,9 +49,18 @@ const ReminderWithOptions: React.FC<{
     else return timers[interval] / 24 + " Days";
   };
 
+  const dueDays = (): number => {
+    const now = getNow().getTime();
+    const lastViewedDate = new Date(lastViewed).getTime();
+    const dueDays = (now - lastViewedDate) / (1000 * 60 * 60 * 24);
+    return Math.floor(dueDays) - (timers[currentInterval]/24);
+  }
+
   return (
     <div className="flex flex-col">
       {data}
+      <br />
+      Due {dueDays()} days
       <br />
       Remind again in...
       <br />
