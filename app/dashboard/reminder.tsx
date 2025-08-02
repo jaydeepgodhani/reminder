@@ -5,6 +5,7 @@ import {
   getNow,
   timers,
 } from "../constants";
+import Button from "./button";
 import { Imessage } from "./reminders";
 
 const ReminderWithOptions: React.FC<{
@@ -55,32 +56,32 @@ const ReminderWithOptions: React.FC<{
   }
 
   return (
-    <div className="flex items-center">
+    <div className="flex items-center border-b-1 py-4">
       <div className="w-1/4"></div>
-      <div className="w-1/2 flex flex-col justify-between">
-        {data}
-        <br />
-        Due {dueDays()} days
-        <br />
-        Remind again in...
-        <br />
-        <div className="flex space-between">
-          {currentInterval > 0 && (
-            <button
-              onClick={previousHandler}
-              className="border p-2 bg-blue-700"
-            >
-              {times(currentInterval - 1)}
-            </button>
-          )}
-          <button onClick={skipHandler} className="border p-2">
-            Skip
-          </button>
-          {currentInterval < timers.length - 1 && (
-            <button onClick={currentHandler} className="border p-2 bg-red-700">
-              {times(currentInterval)}
-            </button>
-          )}
+      <div className="w-1/2 flex flex-col">
+        <div className="py-2">{data}</div>
+        <div className="py-2">
+          <b>Due</b> : {dueDays()} days
+        </div>
+        <div className="py-2">
+          Remind again in...
+          <br />
+          <br />
+          <div className="flex space-between">
+            {currentInterval > 0 && (
+              <Button onClick={previousHandler} color={"#ffff00"}>
+                {times(currentInterval - 1)}
+              </Button>
+            )}
+            <Button onClick={skipHandler} color={"#000000"}>
+              Skip
+            </Button>
+            {currentInterval < timers.length - 1 && (
+              <Button onClick={currentHandler} color={"#ffff00"}>
+                {times(currentInterval)}
+              </Button>
+            )}
+          </div>
         </div>
       </div>
       <div className="w-1/4"></div>

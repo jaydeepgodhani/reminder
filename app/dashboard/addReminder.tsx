@@ -1,6 +1,7 @@
 'use client';
 import { useState } from "react";
 import { getLocalStorage, getNow } from "../constants";
+import Button from "./button";
 
 export default function NewReminder() {
 
@@ -27,13 +28,18 @@ export default function NewReminder() {
   return (
     <div className="flex items-center">
       <div className="w-1/4"></div>
-      <div className="w-1/2">
-        Add a reminder
-        <br />
-        <input type="text" onChange={inputHandler} className="p-2 border" />
-        <button className="border p-2" onClick={clickHandler}>
-          Add
-        </button>
+      <div className="w-1/2 items-center justify-center">
+        <div className="flex flex-col py-2">
+          <textarea
+            rows="4"
+            onChange={inputHandler}
+            className="p-2 border rounded-xl"
+            placeholder="Add something to get a revision reminder"
+          />
+        </div>
+        <Button onClick={clickHandler} color={"#50d71e"}>
+          Add a reminder
+        </Button>
       </div>
       <div className="w-1/4"></div>
     </div>

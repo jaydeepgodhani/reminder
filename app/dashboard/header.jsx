@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { getLocalStorage, getNow, timers } from "../constants";
+import Button from "./button";
 
 export default function Header({setData}) {
   const [lastUpdated, setLastUpdated] = useState(null);
@@ -26,12 +27,16 @@ export default function Header({setData}) {
   }, []);
 
   return (
-    <div className="flex h-16 items-center border-b-2 border-black">
+    <div className="flex h-20 items-center border-b-1 border-black">
       <div className="w-1/4"></div>
       <div className="w-1/2 flex flex-row items-center justify-between">
-        {lastUpdated && <span>`Last Updated at ${lastUpdated}`</span>}
+        {lastUpdated && (
+          <div>
+            <b>Last Updated</b> : {lastUpdated}
+          </div>
+        )}
 
-        <button onClick={refreshHandler}>Refresh</button>
+        <Button onClick={refreshHandler} color={'#ffff00'} >Refresh</Button>
       </div>
       <div className="w-1/4"></div>
     </div>
