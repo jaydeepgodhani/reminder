@@ -55,28 +55,35 @@ const ReminderWithOptions: React.FC<{
   }
 
   return (
-    <div className="flex flex-col">
-      {data}
-      <br />
-      Due {dueDays()} days
-      <br />
-      Remind again in...
-      <br />
-      <div className="flex space-between">
-        {currentInterval > 0 && (
-          <button onClick={previousHandler} className="border p-2 bg-blue-700">
-            {times(currentInterval - 1)}
+    <div className="flex items-center">
+      <div className="w-1/4"></div>
+      <div className="w-1/2 flex flex-col justify-between">
+        {data}
+        <br />
+        Due {dueDays()} days
+        <br />
+        Remind again in...
+        <br />
+        <div className="flex space-between">
+          {currentInterval > 0 && (
+            <button
+              onClick={previousHandler}
+              className="border p-2 bg-blue-700"
+            >
+              {times(currentInterval - 1)}
+            </button>
+          )}
+          <button onClick={skipHandler} className="border p-2">
+            Skip
           </button>
-        )}
-        <button onClick={skipHandler} className="border p-2">
-          Skip
-        </button>
-        {currentInterval < timers.length - 1 && (
-          <button onClick={currentHandler} className="border p-2 bg-red-700">
-            {times(currentInterval)}
-          </button>
-        )}
+          {currentInterval < timers.length - 1 && (
+            <button onClick={currentHandler} className="border p-2 bg-red-700">
+              {times(currentInterval)}
+            </button>
+          )}
+        </div>
       </div>
+      <div className="w-1/4"></div>
     </div>
   );
 };
