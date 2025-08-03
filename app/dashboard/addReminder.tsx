@@ -25,11 +25,11 @@ export default function NewReminder() {
         lastViewed: now,
         currentInterval: 0,
       });
+      localStorage.setItem("reminders", JSON.stringify(jsonReminder));
+      setText(null);
+      setIsAdded(true);
+      textAreaRef.current.value = null;
     }
-    localStorage.setItem("reminders", JSON.stringify(jsonReminder));
-    textAreaRef.current.value = null;
-    setIsAdded(true);
-    setText(null);
   };
 
   useEffect(()=> {
