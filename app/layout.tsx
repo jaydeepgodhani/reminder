@@ -19,7 +19,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`antialiased flex items-center justify-center w-full`}
+        className={`antialiased flex items-center justify-center w-full bg-[#f5f5ee]`}
       >
         {children}
       </body>

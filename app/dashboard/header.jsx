@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { IoMdRefresh } from "react-icons/io";
 import { getLocalStorage, getNow, timers } from "../constants";
 import Button from "./button";
 
@@ -36,7 +37,11 @@ export default function Header({setData}) {
           </div>
         )}
 
-        <Button onClick={refreshHandler} color={'#ffff00'} >Refresh</Button>
+        <Button onClick={refreshHandler} bgColor={"#000000"}>
+          <div className="flex items-center">
+            <IoMdRefresh />&nbsp; Refresh
+          </div>
+        </Button>
       </div>
       <div className="w-1/4"></div>
     </div>

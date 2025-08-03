@@ -52,7 +52,8 @@ const ReminderWithOptions: React.FC<{
     const now = getNow().getTime();
     const lastViewedDate = new Date(lastViewed).getTime();
     const dueDays = (now - lastViewedDate) / (1000 * 60 * 60 * 24);
-    return Math.floor(dueDays) - (timers[currentInterval]/24);
+    const floorDueDays = Math.floor(dueDays - timers[currentInterval] / 24);
+    return floorDueDays < 0 ? 0 : floorDueDays;
   }
 
   return (
@@ -69,15 +70,15 @@ const ReminderWithOptions: React.FC<{
           <br />
           <div className="flex space-between">
             {currentInterval > 0 && (
-              <Button onClick={previousHandler} color={"#ffff00"}>
+              <Button onClick={previousHandler} bgColor={"#3373C4"}>
                 {times(currentInterval - 1)}
               </Button>
             )}
-            <Button onClick={skipHandler} color={"#000000"}>
+            <Button onClick={skipHandler} textColor={"black"}>
               Skip
             </Button>
             {currentInterval < timers.length - 1 && (
-              <Button onClick={currentHandler} color={"#ffff00"}>
+              <Button onClick={currentHandler} bgColor={"#3373C4"}>
                 {times(currentInterval)}
               </Button>
             )}

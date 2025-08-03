@@ -1,11 +1,15 @@
 'use client';
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { IoMdAdd } from "react-icons/io";
+import { MdDone } from "react-icons/md";
 import { getLocalStorage, getNow } from "../constants";
 import Button from "./button";
 
 export default function NewReminder() {
 
-  const [text, setText] = useState<string>("");
+  const [text, setText] = useState<string|null>(null);
+  const [isAdded, setIsAdded] = useState(false);
+  const textAreaRef = useRef(null);
 
   const inputHandler = (e: any) => {
     setText(e.target.value);
@@ -23,7 +27,21 @@ export default function NewReminder() {
       });
     }
     localStorage.setItem("reminders", JSON.stringify(jsonReminder));
+    textAreaRef.current.value = null;
+    setIsAdded(true);
+    setText(null);
   };
+
+  useEffect(()=> {
+    if(isAdded){
+      const tout = setTimeout(()=> {
+        setIsAdded(false);
+      }, 2000);
+      return () => {
+        clearTimeout(tout);
+      };
+    }
+  }, [isAdded]);
 
   return (
     <div className="flex items-center">
@@ -33,13 +51,24 @@ export default function NewReminder() {
           <textarea
             rows="4"
             onChange={inputHandler}
+            ref={textAreaRef}
             className="p-2 border rounded-xl"
             placeholder="Add something to get a revision reminder"
           />
         </div>
-        <Button onClick={clickHandler} color={"#50d71e"}>
-          Add a reminder
-        </Button>
+        <div className="py-2 flex">
+          <Button onClick={clickHandler} bgColor={"#000000"}>
+            <div className="flex items-center">
+              <IoMdAdd />
+              &nbsp; Add a reminder
+            </div>
+          </Button>
+          {isAdded && <div className="flex items-center text-green-600">
+            &emsp;
+            <MdDone />
+            Added Successfully !
+          </div>}
+        </div>
       </div>
       <div className="w-1/4"></div>
     </div>

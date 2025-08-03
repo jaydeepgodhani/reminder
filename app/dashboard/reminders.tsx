@@ -8,6 +8,16 @@ export interface Imessage {
   currentInterval: number;
 }
 
+const Structure = ({children}) => {
+  return (
+    <div className="flex items-center border-b-1 py-4">
+      <div className="w-1/4"></div>
+      <div className="w-1/2 flex flex-col">{children}</div>
+      <div className="w-1/4"></div>
+    </div>
+  );
+}
+
 export default function Reminders({ data=[] }) {
   const [currentReminder, setCurrentReminder] = useState<number>(0);
 
@@ -18,12 +28,12 @@ export default function Reminders({ data=[] }) {
   let messages: Imessage[] = [];
 
   if (data.length === 0) return (
-    <p className="font-mono">
+    <Structure>
       No reminders. Keep up the revisions.
-    </p>
+    </Structure>
   );
   if (currentReminder >= data.length)
-    return <p>You did everything. Awesome.</p>;
+    return <Structure>You did everything. Awesome.</Structure>;
 
   return (
     <ReminderWithOptions
