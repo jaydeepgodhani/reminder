@@ -1,13 +1,17 @@
-'use client';
+"use client";
+import { AnimatePresence, motion } from "motion/react";
 import { useEffect, useRef, useState } from "react";
 import { IoMdAdd } from "react-icons/io";
 import { MdDone } from "react-icons/md";
 import { getLocalStorage, getNow } from "../constants";
 import Button from "./button";
 
-export default function NewReminder() {
+const transition = {
+  duration: 1,
+};
 
-  const [text, setText] = useState<string|null>(null);
+export default function NewReminder() {
+  const [text, setText] = useState<string | null>(null);
   const [isAdded, setIsAdded] = useState(false);
   const textAreaRef = useRef(null);
 
@@ -17,7 +21,7 @@ export default function NewReminder() {
 
   const clickHandler = (e: any) => {
     const jsonReminder = getLocalStorage();
-    if(text) {
+    if (text) {
       const now = getNow();
       jsonReminder.push({
         // if not null then only add
@@ -32,9 +36,9 @@ export default function NewReminder() {
     }
   };
 
-  useEffect(()=> {
-    if(isAdded){
-      const tout = setTimeout(()=> {
+  useEffect(() => {
+    if (isAdded) {
+      const tout = setTimeout(() => {
         setIsAdded(false);
       }, 2000);
       return () => {
@@ -63,11 +67,21 @@ export default function NewReminder() {
               &nbsp; Add a reminder
             </div>
           </Button>
-          {isAdded && <div className="flex items-center text-green-600">
-            &emsp;
-            <MdDone />
-            Added Successfully !
-          </div>}
+          <AnimatePresence>
+            {isAdded && (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0, transition: transition }}
+                transition={transition}
+                className="flex items-center text-green-600"
+              >
+                &emsp;
+                <MdDone />&nbsp;
+                Added Successfully
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
       </div>
       <div className="w-1/4"></div>

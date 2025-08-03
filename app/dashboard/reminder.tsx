@@ -1,4 +1,5 @@
 "use client";
+import { AnimatePresence, motion } from "motion/react";
 import {
   findFromLocalStorage,
   getLocalStorage,
@@ -7,6 +8,10 @@ import {
 } from "../constants";
 import Button from "./button";
 import { Imessage } from "./reminders";
+
+const transition = {
+  duration: 0.3,
+};
 
 const ReminderWithOptions: React.FC<{
   message: Imessage;
@@ -54,36 +59,46 @@ const ReminderWithOptions: React.FC<{
     const dueDays = (now - lastViewedDate) / (1000 * 60 * 60 * 24);
     const floorDueDays = Math.floor(dueDays - timers[currentInterval] / 24);
     return floorDueDays < 0 ? 0 : floorDueDays;
-  }
+  };
 
   return (
     <div className="flex items-center border-b-1 py-4">
       <div className="w-1/4"></div>
       <div className="w-1/2 flex flex-col">
-        <div className="py-2">{data}</div>
-        <div className="py-2">
-          <b>Due</b> : {dueDays()} days
-        </div>
-        <div className="py-2">
-          Remind again in...
-          <br />
-          <br />
-          <div className="flex space-between">
-            {currentInterval > 0 && (
-              <Button onClick={previousHandler} bgColor={"#3373C4"}>
-                {times(currentInterval - 1)}
-              </Button>
-            )}
-            <Button onClick={skipHandler} textColor={"black"}>
-              Skip
-            </Button>
-            {currentInterval < timers.length - 1 && (
-              <Button onClick={currentHandler} bgColor={"#3373C4"}>
-                {times(currentInterval)}
-              </Button>
-            )}
-          </div>
-        </div>
+        <AnimatePresence mode="wait">
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0, transition: transition }}
+            transition={transition}
+            key={Math.random()}
+          >
+            <div className="py-2">{data}</div>
+            <div className="py-2">
+              <b>Due</b> : {dueDays()} days
+            </div>
+            <div className="py-2">
+              Remind again in...
+              <br />
+              <br />
+              <div className="flex space-between">
+                {currentInterval > 0 && (
+                  <Button onClick={previousHandler} bgColor={"#3373C4"}>
+                    {times(currentInterval - 1)}
+                  </Button>
+                )}
+                <Button onClick={skipHandler} textColor={"black"}>
+                  Skip
+                </Button>
+                {currentInterval < timers.length - 1 && (
+                  <Button onClick={currentHandler} bgColor={"#3373C4"}>
+                    {times(currentInterval)}
+                  </Button>
+                )}
+              </div>
+            </div>
+          </motion.div>
+        </AnimatePresence>
       </div>
       <div className="w-1/4"></div>
     </div>
