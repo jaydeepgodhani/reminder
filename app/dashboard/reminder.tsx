@@ -64,7 +64,7 @@ const ReminderWithOptions: React.FC<{
   return (
     <div className="flex items-center border-b-1 py-4">
       <div className="w-1/4"></div>
-      <div className="w-1/2 flex flex-col">
+      <div className="w-1/2">
         <AnimatePresence mode="wait">
           <motion.div
             initial={{ opacity: 0 }}
@@ -72,28 +72,33 @@ const ReminderWithOptions: React.FC<{
             exit={{ opacity: 0, transition: transition }}
             transition={transition}
             key={Math.random()}
+            className="flex flex-col w-full"
           >
             <div className="py-2">{data}</div>
-            <div className="py-2">
+            <div className="py-2 w-fit ml-auto">
               <b>Due</b> : {dueDays()} days
             </div>
-            <div className="py-2">
-              Remind again in...
-              <br />
-              <br />
-              <div className="flex space-between">
-                {currentInterval > 0 && (
-                  <Button onClick={previousHandler} bgColor={"#3373C4"}>
-                    {times(currentInterval - 1)}
-                  </Button>
-                )}
+            <div className="flex py-2 justify-between">
+              <div className="-ml-6">
                 <Button onClick={skipHandler} textColor={"black"}>
                   Skip
                 </Button>
+              </div>
+              <div className="flex space-between items-center">
+                <div className="w-fit mr-2">Remind again in</div>&emsp;
+                {currentInterval > 0 && (
+                  <div className="mr-2">
+                    <Button onClick={previousHandler} bgColor={"#3373C4"}>
+                      {times(currentInterval - 1)}
+                    </Button>
+                  </div>
+                )}
                 {currentInterval < timers.length - 1 && (
-                  <Button onClick={currentHandler} bgColor={"#3373C4"}>
-                    {times(currentInterval)}
-                  </Button>
+                  <div>
+                    <Button onClick={currentHandler} bgColor={"#3373C4"}>
+                      {times(currentInterval)}
+                    </Button>
+                  </div>
                 )}
               </div>
             </div>

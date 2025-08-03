@@ -60,28 +60,31 @@ export default function NewReminder() {
             placeholder="Add something to get a revision reminder"
           />
         </div>
-        <div className="py-2 flex">
-          <Button onClick={clickHandler} bgColor={"#000000"}>
-            <div className="flex items-center">
-              <IoMdAdd />
-              &nbsp; Add a reminder
-            </div>
-          </Button>
-          <AnimatePresence>
-            {isAdded && (
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0, transition: transition }}
-                transition={transition}
-                className="flex items-center text-green-600"
-              >
-                &emsp;
-                <MdDone />&nbsp;
-                Added Successfully
-              </motion.div>
-            )}
-          </AnimatePresence>
+        <div className="py-2 flex w-full items-center">
+          <div className="ml-auto mr-4">
+            <AnimatePresence>
+              {isAdded && (
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0, transition: transition }}
+                  transition={transition}
+                  className="flex items-center text-green-600"
+                >
+                  <MdDone />
+                  &nbsp; Added Successfully
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+          <div className="right-0">
+            <Button onClick={clickHandler} bgColor={"#000000"}>
+              <div className="flex items-center">
+                <IoMdAdd />
+                &nbsp; Add a reminder
+              </div>
+            </Button>
+          </div>
         </div>
       </div>
       <div className="w-1/4"></div>
