@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import ReminderWithOptions from "./reminder";
 
 export interface Imessage {
@@ -8,7 +8,7 @@ export interface Imessage {
   currentInterval: number;
 }
 
-const Structure = ({children}) => {
+const Structure = ({ children }: {children: ReactNode}) => {
   return (
     <div className="flex items-center border-b-1 py-4">
       <div className="w-1/4"></div>
@@ -16,23 +16,21 @@ const Structure = ({children}) => {
       <div className="w-1/4"></div>
     </div>
   );
-}
+};
 
-export default function Reminders({ data=[] }) {
+export default function Reminders({ data }: {data: Imessage[] | undefined}) {
   const [currentReminder, setCurrentReminder] = useState<number>(0);
 
   useEffect(()=>{
     setCurrentReminder(0);
   }, [data]);
 
-  let messages: Imessage[] = [];
-
-  if (data.length === 0) return (
+  if (!data || data.length === 0) return (
     <Structure>
       No reminders. Keep up the revisions.
     </Structure>
   );
-  if (currentReminder >= data.length)
+  if (data && currentReminder >= data.length)
     return <Structure>You did everything. Awesome.</Structure>;
 
   return (

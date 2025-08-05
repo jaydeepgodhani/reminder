@@ -13,13 +13,13 @@ const transition = {
 export default function NewReminder() {
   const [text, setText] = useState<string | null>(null);
   const [isAdded, setIsAdded] = useState(false);
-  const textAreaRef = useRef(null);
+  const textAreaRef = useRef<HTMLTextAreaElement>(null);
 
-  const inputHandler = (e: any) => {
+  const inputHandler = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setText(e.target.value);
   };
 
-  const clickHandler = (e: any) => {
+  const clickHandler = () => {
     const jsonReminder = getLocalStorage();
     if (text) {
       const now = getNow();
@@ -32,7 +32,7 @@ export default function NewReminder() {
       localStorage.setItem("reminders", JSON.stringify(jsonReminder));
       setText(null);
       setIsAdded(true);
-      textAreaRef.current.value = null;
+      if (textAreaRef.current) textAreaRef.current.value = "";
     }
   };
 
@@ -53,7 +53,7 @@ export default function NewReminder() {
       <div className="w-1/2 items-center justify-center">
         <div className="flex flex-col py-2">
           <textarea
-            rows="4"
+            rows={4}
             onChange={inputHandler}
             ref={textAreaRef}
             className="p-2 border rounded-xl"

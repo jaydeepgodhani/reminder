@@ -4,7 +4,7 @@ import { useState } from "react";
 export default function Login() {
   const [userName, setUserName] = useState<string>();
   const [password, setPassword] = useState<string>();
-  const clickHandler = (e: any) => {
+  const clickHandler = () => {
     console.log(userName);
     console.log(password);
   }
