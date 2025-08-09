@@ -1,7 +1,21 @@
-export default function Home() {
+"use client";
+import { useState } from "react";
+import NewReminder from "../helpers/addReminder";
+import Header from "../helpers/header";
+import Reminders, { Imessage } from "../helpers/reminders";
+
+export default function Dashboard() {
+  const [data, setData] = useState<Imessage[]>();
+
   return (
-    <div className="flex items-center justify-center w-full">
-      <main>next js</main>
+    <div className="w-full flex justify-center">
+      <div className=""></div>
+      <div className="w-full">
+        <Header setData={setData} />
+        <Reminders data={data} />
+        <br />
+        <NewReminder />
+      </div>
     </div>
   );
 }
