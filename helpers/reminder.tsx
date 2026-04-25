@@ -1,46 +1,39 @@
 "use client";
 import { AnimatePresence, motion } from "motion/react";
-import {
-  findFromLocalStorage,
-  getLocalStorage,
-  getNow,
-  timers,
-} from "../app/constants";
+import { getNow, serviceURL, timers } from "../app/constants";
 import Button from "./button";
-import { Imessage } from "./reminders";
+import { GetNotesRes } from "./reminders";
 
 const transition = {
   duration: 0.3,
 };
 
 const ReminderWithOptions: React.FC<{
-  message: Imessage;
+  message: GetNotesRes;
   setCurrentReminder: React.Dispatch<React.SetStateAction<number>>;
 }> = ({ message, setCurrentReminder }) => {
-  const { data, currentInterval, lastViewed } = message;
-  const previousHandler = () => {
-    // update date & minus one
-    const reminders = getLocalStorage();
-    const reminder = findFromLocalStorage(message, reminders);
-    if (reminder) {
-      reminder.currentInterval = reminder.currentInterval - 1;
-      const now = getNow();
-      reminder.lastViewed = now.toISOString();
-    }
-    localStorage.setItem("reminders", JSON.stringify(reminders));
-    setCurrentReminder((e: number) => e + 1);
-  };
+  const { note, currentInterval, updatedAt, noteId } = message;
+  const content = note.content;
 
-  const currentHandler = () => {
-    // update date
-    const reminders = getLocalStorage();
-    const reminder = findFromLocalStorage(message, reminders);
-    if (reminder) {
-      reminder.currentInterval = reminder.currentInterval + 1;
-      const now = getNow();
-      reminder.lastViewed = now.toISOString();
+  const updateNoteHandler = async (increase: boolean) => {
+    const response = await fetch(`${serviceURL}/updateNote`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        userId: 9,
+        noteId: noteId,
+        increase: increase,
+      }),
+    });
+    const jsonData = await response.json();
+    // TODO... what to do in case of error and server down
+    if (jsonData.status === 200) {
+      console.log("successfully updated");
+    } else {
+      console.log("failed to update");
     }
-    localStorage.setItem("reminders", JSON.stringify(reminders));
     setCurrentReminder((e: number) => e + 1);
   };
 
@@ -55,7 +48,7 @@ const ReminderWithOptions: React.FC<{
 
   const dueDays = (): number => {
     const now = getNow().getTime();
-    const lastViewedDate = new Date(lastViewed).getTime();
+    const lastViewedDate = new Date(updatedAt).getTime();
     const dueDays = (now - lastViewedDate) / (1000 * 60 * 60 * 24);
     const floorDueDays = Math.floor(dueDays - timers[currentInterval] / 24);
     return floorDueDays < 0 ? 0 : floorDueDays;
@@ -74,7 +67,7 @@ const ReminderWithOptions: React.FC<{
             key={Math.random()}
             className="flex flex-col w-full"
           >
-            <div className="py-2">{data}</div>
+            <div className="py-2">{content}</div>
             <div className="py-2 w-fit ml-auto">
               <b>Due</b> : {dueDays()} days
             </div>
@@ -88,14 +81,20 @@ const ReminderWithOptions: React.FC<{
                 <div className="w-fit mr-2">Remind again in</div>&emsp;
                 {currentInterval > 0 && (
                   <div className="mr-2">
-                    <Button onClick={previousHandler} bgColor={"#3373C4"}>
+                    <Button
+                      onClick={() => updateNoteHandler(false)}
+                      bgColor={"#3373C4"}
+                    >
                       {times(currentInterval - 1)}
                     </Button>
                   </div>
                 )}
                 {currentInterval < timers.length - 1 && (
                   <div>
-                    <Button onClick={currentHandler} bgColor={"#3373C4"}>
+                    <Button
+                      onClick={() => updateNoteHandler(true)}
+                      bgColor={"#3373C4"}
+                    >
                       {times(currentInterval)}
                     </Button>
                   </div>

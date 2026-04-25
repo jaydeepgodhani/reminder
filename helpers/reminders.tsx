@@ -2,13 +2,23 @@
 import { ReactNode, useEffect, useState } from "react";
 import ReminderWithOptions from "./reminder";
 
-export interface Imessage {
-  data: string;
-  lastViewed: string;
+export interface GetNotesRes {
+  userId: number;
+  noteId: number;
   currentInterval: number;
+  id: number;
+  updatedAt: Date;
+  user: {
+    username: string;
+  };
+  note: {
+    id: number;
+    tags: string[];
+    content: string;
+  };
 }
 
-const Structure = ({ children }: {children: ReactNode}) => {
+const Structure = ({ children }: { children: ReactNode }) => {
   return (
     <div className="flex items-center border-b-1 py-4">
       <div className="w-1/4"></div>
@@ -18,18 +28,19 @@ const Structure = ({ children }: {children: ReactNode}) => {
   );
 };
 
-export default function Reminders({ data }: {data: Imessage[] | undefined}) {
+export default function Reminders({
+  data,
+}: {
+  data: GetNotesRes[] | undefined;
+}) {
   const [currentReminder, setCurrentReminder] = useState<number>(0);
 
-  useEffect(()=>{
+  useEffect(() => {
     setCurrentReminder(0);
   }, [data]);
 
-  if (!data || data.length === 0) return (
-    <Structure>
-      No reminders. Keep up the revisions.
-    </Structure>
-  );
+  if (!data || data.length === 0)
+    return <Structure>No reminders. Keep up the revisions.</Structure>;
   if (data && currentReminder >= data.length)
     return <Structure>You did everything. Awesome.</Structure>;
 

@@ -3,7 +3,7 @@ import { AnimatePresence, motion } from "motion/react";
 import { useEffect, useRef, useState } from "react";
 import { IoMdAdd } from "react-icons/io";
 import { MdDone } from "react-icons/md";
-import { getLocalStorage, getNow } from "../app/constants";
+import { serviceURL } from "../app/constants";
 import Button from "./button";
 
 const transition = {
@@ -19,20 +19,29 @@ export default function NewReminder() {
     setText(e.target.value);
   };
 
-  const clickHandler = () => {
-    const jsonReminder = getLocalStorage();
+  const clickHandler = async () => {
     if (text) {
-      const now = getNow();
-      jsonReminder.push({
-        // if not null then only add
-        data: text,
-        lastViewed: now,
-        currentInterval: 0,
+      const response = await fetch(`${serviceURL}/createNote`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          userId: 9,
+          content: text,
+          tags: ["default"],
+        }),
       });
-      localStorage.setItem("reminders", JSON.stringify(jsonReminder));
-      setText(null);
-      setIsAdded(true);
-      if (textAreaRef.current) textAreaRef.current.value = "";
+      const jsonData = await response.json();
+      // TODO... what to do in case of error and server down
+      if (jsonData.status === 200) {
+        console.log("successfully added");
+        setText(null);
+        setIsAdded(true);
+        if (textAreaRef.current) textAreaRef.current.value = "";
+      } else {
+        console.log("failed to add");
+      }
     }
   };
 

@@ -2,10 +2,10 @@
 import { useState } from "react";
 import NewReminder from "../helpers/addReminder";
 import Header from "../helpers/header";
-import Reminders, { Imessage } from "../helpers/reminders";
+import Reminders, { GetNotesRes } from "../helpers/reminders";
 
 export default function Dashboard() {
-  const [data, setData] = useState<Imessage[]>();
+  const [data, setData] = useState<GetNotesRes[]>();
 
   return (
     <div className="w-full flex justify-center">

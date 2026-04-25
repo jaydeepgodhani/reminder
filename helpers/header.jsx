@@ -1,26 +1,30 @@
 import { useEffect, useState } from "react";
 import { IoMdRefresh } from "react-icons/io";
-import { getLocalStorage, getNow, timers } from "../app/constants";
+import { serviceURL } from "../app/constants";
 import Button from "./button";
 
-export default function Header({setData}) {
+export default function Header({ setData }) {
   const [lastUpdated, setLastUpdated] = useState(null);
 
-  const refreshHandler = () => {
-    let arr = [];
-    setLastUpdated(new Date().toUTCString());
-    // what to do on refresh
-    const reminders = getLocalStorage();
-    for (const reminder of reminders) {
-      const lastviewed = new Date(reminder.lastViewed).getTime();
-      const now = getNow().getTime();
-      const currentInterval = reminder.currentInterval;
-      const displayAt = new Date(lastviewed);
-      if (now > lastviewed + timers[currentInterval] * 60 * 1000) {
-        arr.push(reminder);
-      }
+  const refreshHandler = async () => {
+    const response = await fetch(`${serviceURL}/getNotes`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        userId: 9,
+      }),
+    });
+    const jsonData = await response.json();
+    // TODO... what to do in case of error and server down
+    if (jsonData.status === 200) {
+      console.log("successfully fetched all notes");
+      setData(jsonData.data);
+    } else {
+      console.log("failed to fetch");
     }
-    setData(arr.slice());
+    setLastUpdated(new Date().toUTCString());
   };
 
   useEffect(() => {
@@ -39,7 +43,8 @@ export default function Header({setData}) {
 
         <Button onClick={refreshHandler} bgColor={"#000000"}>
           <div className="flex items-center">
-            <IoMdRefresh />&nbsp; Refresh
+            <IoMdRefresh />
+            &nbsp; Refresh
           </div>
         </Button>
       </div>
