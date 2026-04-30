@@ -9,8 +9,7 @@ export default function Dashboard() {
 
   return (
     <div className="w-full flex justify-center">
-      <div className=""></div>
-      <div className="w-full">
+      <div className="w-full md:w-3/4 lg:w-3/4 xl:w-3/5">
         <Header setData={setData} />
         <Reminders data={data} />
         <br />

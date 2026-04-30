@@ -55,9 +55,8 @@ const ReminderWithOptions: React.FC<{
   };
 
   return (
-    <div className="flex items-center border-b-1 py-4">
-      <div className="w-1/4"></div>
-      <div className="w-1/2">
+    <div className="flex w-full items-center py-4 px-4">
+      <div className="w-full">
         <AnimatePresence mode="wait">
           <motion.div
             initial={{ opacity: 0 }}
@@ -71,8 +70,8 @@ const ReminderWithOptions: React.FC<{
             <div className="py-2 w-fit ml-auto">
               <b>Due</b> : {dueDays()} days
             </div>
-            <div className="flex py-2 justify-between">
-              <div className="-ml-6">
+            <div className="flex py-2 justify-between items-center">
+              <div>
                 <Button onClick={skipHandler} textColor={"black"}>
                   Skip
                 </Button>
@@ -104,7 +103,6 @@ const ReminderWithOptions: React.FC<{
           </motion.div>
         </AnimatePresence>
       </div>
-      <div className="w-1/4"></div>
     </div>
   );
 };

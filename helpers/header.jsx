@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { IoMdRefresh } from "react-icons/io";
 import { serviceURL } from "../app/constants";
 import Button from "./button";
+const timePlaceholder = "-:-";
 
 export default function Header({ setData }) {
   const [lastUpdated, setLastUpdated] = useState(null);
@@ -24,7 +25,11 @@ export default function Header({ setData }) {
     } else {
       console.log("failed to fetch");
     }
-    setLastUpdated(new Date().toUTCString());
+    const now = new Date();
+    const minutes =
+      now.getMinutes() < 10 ? `0${now.getMinutes()}` : now.getMinutes();
+    const formattedDate = `${now.getDate()}/${now.getMonth()}/${now.getFullYear()}, ${now.getHours()}:${minutes} UTC`;
+    setLastUpdated(formattedDate);
   };
 
   useEffect(() => {
@@ -32,23 +37,23 @@ export default function Header({ setData }) {
   }, []);
 
   return (
-    <div className="flex h-20 items-center border-b-1 border-black">
-      <div className="w-1/4"></div>
-      <div className="w-1/2 flex flex-row items-center justify-between">
-        {lastUpdated && (
-          <div>
-            <b>Last Updated</b> : {lastUpdated}
-          </div>
-        )}
+    <div className="flex h-20 items-center">
+      <div className="w-full flex flex-row items-center h-full justify-between border-b-2 border-black px-4">
+        <div>
+          <b>Last Updated</b> : {lastUpdated ? lastUpdated : timePlaceholder}
+        </div>
 
-        <Button onClick={refreshHandler} bgColor={"#000000"}>
+        <Button
+          onClick={refreshHandler}
+          bgColor={"transparent"}
+          textColor={"black"}
+        >
           <div className="flex items-center">
             <IoMdRefresh />
             &nbsp; Refresh
           </div>
         </Button>
       </div>
-      <div className="w-1/4"></div>
     </div>
   );
 }

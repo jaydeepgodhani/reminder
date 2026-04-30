@@ -20,10 +20,8 @@ export interface GetNotesRes {
 
 const Structure = ({ children }: { children: ReactNode }) => {
   return (
-    <div className="flex items-center border-b-1 py-4">
-      <div className="w-1/4"></div>
-      <div className="w-1/2 flex flex-col">{children}</div>
-      <div className="w-1/4"></div>
+    <div className="w-full flex items-center border-b-1 py-4">
+      <div className="w-full flex flex-col">{children}</div>
     </div>
   );
 };

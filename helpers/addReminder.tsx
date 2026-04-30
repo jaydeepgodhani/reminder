@@ -58,14 +58,13 @@ export default function NewReminder() {
 
   return (
     <div className="flex items-center">
-      <div className="w-1/4"></div>
-      <div className="w-1/2 items-center justify-center">
+      <div className="w-full items-center justify-center px-4">
         <div className="flex flex-col py-2">
           <textarea
             rows={4}
             onChange={inputHandler}
             ref={textAreaRef}
-            className="p-2 border rounded-xl"
+            className="p-2 border-[2px] rounded-xl"
             placeholder="Add something to get a revision reminder"
           />
         </div>
@@ -96,7 +95,6 @@ export default function NewReminder() {
           </div>
         </div>
       </div>
-      <div className="w-1/4"></div>
     </div>
   );
 }
