@@ -12,7 +12,6 @@ export default function Dashboard() {
       <div className="w-full md:w-3/4 lg:w-3/4 xl:w-3/5">
         <Header setData={setData} />
         <Reminders data={data} />
-        <br />
         <NewReminder />
       </div>
     </div>

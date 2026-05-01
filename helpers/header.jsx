@@ -37,8 +37,8 @@ export default function Header({ setData }) {
   }, []);
 
   return (
-    <div className="flex h-20 items-center">
-      <div className="w-full flex flex-row items-center h-full justify-between border-b-2 border-black px-4">
+    <div className="flex items-center">
+      <div className="w-full flex flex-col md:flex-row items-center h-full justify-between border-b-2 border-black px-4 py-4">
         <div>
           <b>Last Updated</b> : {lastUpdated ? lastUpdated : timePlaceholder}
         </div>
@@ -48,7 +48,7 @@ export default function Header({ setData }) {
           bgColor={"transparent"}
           textColor={"black"}
         >
-          <div className="flex items-center">
+          <div className="flex items-center justify-center">
             <IoMdRefresh />
             &nbsp; Refresh
           </div>

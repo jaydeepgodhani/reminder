@@ -76,10 +76,10 @@ const ReminderWithOptions: React.FC<{
                   Skip
                 </Button>
               </div>
-              <div className="flex space-between items-center">
+              <div className="flex space-between items-center flex-col md:flex-row">
                 <div className="w-fit mr-2">Remind again in</div>&emsp;
                 {currentInterval > 0 && (
-                  <div className="mr-2">
+                  <div className="md:mr-2">
                     <Button
                       onClick={() => updateNoteHandler(false)}
                       bgColor={"#3373C4"}
